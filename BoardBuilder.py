@@ -6,7 +6,7 @@ max_width = 400
 max_height = 400
 min_width = 1
 min_height = 1
-step = 5
+step = 10
 
 builder_size = 10
 (builder_x, builder_y) = (0, 0)
@@ -19,19 +19,28 @@ red_color = (231, 76, 60)
 points = []
 
 # Methods
+def should_move_to(nex_x, new_y):
+    new_point = (nex_x, new_y)
+    is_valid = False if new_point in points else True
+    return is_valid
+
 def set_new_position(x_pos, y_pos):
     pressed = pygame.key.get_pressed()
     if pressed[pygame.K_UP]:
-        if y_pos >= step:
+        if y_pos >= step and \
+                should_move_to(builder_x, builder_y - step):
             y_pos -= step
     if pressed[pygame.K_DOWN]:
-        if y_pos <= max_height - builder_size - step:
+        if y_pos <= max_height - builder_size - step and \
+                should_move_to(builder_x, builder_y + builder_size):
             y_pos += step
     if pressed[pygame.K_LEFT]:
-        if x_pos >= step:
+        if x_pos >= step and \
+                should_move_to(builder_x - step, builder_y):
             x_pos -= step
     if pressed[pygame.K_RIGHT]:
-        if x_pos <= max_width - builder_size - step:
+        if x_pos <= max_width - builder_size - step and \
+                should_move_to(builder_x + builder_size, builder_y):
             x_pos += step
     return x_pos, y_pos
 
