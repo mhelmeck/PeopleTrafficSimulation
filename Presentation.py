@@ -1,18 +1,64 @@
 import pygame
 import pickle
+import random
 
 # Properties
 max_width = 400
 max_height = 400
 min_width = 1
 min_height = 1
-step = 10
+step = 5
+
+sample_size = 5
+(sample_x, sample_y) = (200, 200)
 
 is_finished = False
 blue_color = (0, 128, 255)
+red_color = (231, 76, 60)
 
 with open("points.txt", "rb") as fp:
-    points = pickle.load(fp)
+    board = pickle.load(fp)
+
+# Methods
+def should_move_to(nex_x, new_y):
+    new_point = (nex_x, new_y)
+    is_valid = False if new_point in board else True
+    return is_valid
+
+def set_new_position(direction, x_pos, y_pos):
+    if direction == "N":
+        if y_pos >= step and \
+                should_move_to(sample_x, sample_y - step):
+            y_pos -= step
+    if direction == "S":
+        if y_pos <= max_height - sample_size - step and \
+                should_move_to(sample_x, sample_y + sample_size):
+            y_pos += step
+    if direction == "W":
+        if x_pos >= step and \
+                should_move_to(sample_x - step, sample_y):
+            x_pos -= step
+    if direction == "E":
+        if x_pos <= max_width - sample_size - step and \
+                should_move_to(sample_x + sample_size, sample_y):
+            x_pos += step
+
+    return x_pos, y_pos
+
+
+def random_move(pos_x, pos_y):
+    val = random.randint(1, 40)
+    if val in range(1, 11):
+        return set_new_position("N", pos_x, pos_y)
+    if val in range(11, 21):
+        return set_new_position("E", pos_x, pos_y)
+    if val in range(21, 31):
+        return set_new_position("S", pos_x, pos_y)
+    if val in range(31, 41):
+        return set_new_position("W", pos_x, pos_y)
+
+    return pos_x, pos_y
+
 
 # Init and main loop
 pygame.init()
@@ -26,9 +72,17 @@ while not is_finished:
         if event.type == pygame.QUIT:
             is_finished = True
 
+    # Move
+    (sample_x, sample_y) = random_move(sample_x, sample_y)
+
     # Draw
     screen.fill((0, 0, 0))
-    for point in points:
+    pygame.draw.rect(screen, red_color, pygame.Rect(sample_x,
+                                                    sample_y,
+                                                    sample_size,
+                                                    sample_size))
+
+    for point in board:
         pygame.draw.rect(screen, blue_color, pygame.Rect(point[0],
                                                          point[1],
                                                          min_width,
