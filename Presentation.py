@@ -9,7 +9,7 @@ min_width = 1
 min_height = 1
 step = 5
 
-sample_size = 5
+sample_size = step
 (sample_x, sample_y) = (200, 200)
 
 is_finished = False
@@ -27,20 +27,18 @@ def should_move_to(nex_x, new_y):
 
 def set_new_position(direction, x_pos, y_pos):
     if direction == "N":
-        if y_pos >= step and \
-                should_move_to(sample_x, sample_y - step):
+        if y_pos >= step and should_move_to(x_pos, y_pos - step):
             y_pos -= step
     if direction == "S":
-        if y_pos <= max_height - sample_size - step and \
-                should_move_to(sample_x, sample_y + sample_size):
+        new_step = sample_size + step
+        if y_pos <= max_height - new_step and should_move_to(x_pos, y_pos + step):
             y_pos += step
     if direction == "W":
-        if x_pos >= step and \
-                should_move_to(sample_x - step, sample_y):
+        if x_pos >= step and should_move_to(x_pos - step, y_pos):
             x_pos -= step
     if direction == "E":
-        if x_pos <= max_width - sample_size - step and \
-                should_move_to(sample_x + sample_size, sample_y):
+        new_step = sample_size + step
+        if x_pos <= max_width - new_step and should_move_to(x_pos + step, y_pos):
             x_pos += step
 
     return x_pos, y_pos
