@@ -2,8 +2,8 @@ import pygame
 import pickle
 
 # Properties
-max_width = 400
-max_height = 400
+max_width = 800
+max_height = 200
 min_width = 1
 min_height = 1
 step = 10
@@ -16,11 +16,12 @@ is_building = False
 blue_color = (0, 128, 255)
 red_color = (231, 76, 60)
 
-points = []
+with open("points.txt", "rb") as fp:
+    points = pickle.load(fp)
 
 # Methods
-def should_move_to(nex_x, new_y):
-    new_point = (nex_x, new_y)
+def should_move_to(new_x, new_y):
+    new_point = (new_x, new_y)
     is_valid = False if new_point in points else True
 
     return is_valid
