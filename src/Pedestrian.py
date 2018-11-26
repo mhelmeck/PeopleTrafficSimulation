@@ -31,7 +31,7 @@ class Pedestrian:
                 self.x -= self.step
         if direction == "E":
             new_step = self.size + self.step
-            if self.x <= max_width - new_step and self.board.is_destination_available(self.x + self.step, self.y):
+            if self.x <= max_width - 2 * new_step and self.board.is_destination_available(self.x + self.step, self.y):
                 self.x += self.step
 
     def random_move(self):
