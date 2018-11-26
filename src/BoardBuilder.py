@@ -14,6 +14,7 @@ builder_size = step
 is_finished = False
 is_building = False
 blue_color = (0, 128, 255)
+yellow_color = (255,255,0)
 red_color = (231, 76, 60)
 
 with open("points.txt", "rb") as fp:
@@ -21,10 +22,11 @@ with open("points.txt", "rb") as fp:
 
 # Methods
 def should_move_to(new_x, new_y):
-    new_point = (new_x, new_y)
-    is_valid = False if new_point in points else True
-
-    return is_valid
+    return True
+    # new_point = (new_x, new_y)
+    # is_valid = False if new_point in points else True
+    #
+    # return is_valid
 
 def set_new_position(x_pos, y_pos):
     pressed = pygame.key.get_pressed()
@@ -67,6 +69,9 @@ while not is_finished:
             is_finished = True
         if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
             is_building = not is_building
+        if event.type == pygame.MOUSEBUTTONUP:
+            pos = pygame.mouse.get_pos()
+            points.append(pos + ("Entrance",))
 
     # Move
     (builder_x, builder_y) = set_new_position(builder_x, builder_y)
@@ -80,11 +85,16 @@ while not is_finished:
                                                 builder_y,
                                                 builder_size,
                                                 builder_size))
-    for point in points:
+    walls = [x for x in points if (x[2] == 'Wall')]
+    entrances = [x for x in points if (x[2] == 'Entrance')]
+    for point in walls:
         pygame.draw.rect(screen, color, pygame.Rect(point[0],
                                                     point[1],
                                                     min_width,
                                                     min_height))
+    for point in entrances:
+        pygame.draw.circle(screen, yellow_color, (point[0], point[1]), 3)
+
     # Render
     pygame.display.flip()
     clock.tick(30)

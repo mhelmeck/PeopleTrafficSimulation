@@ -9,6 +9,18 @@ max_height = 200
 min_width = 1
 min_height = 1
 
+def draw_pedestrians():
+    for pedestrian in pedRep.pedestrians:
+        pygame.draw.circle(screen, red_color, (pedestrian.x, pedestrian.y), 2)
+
+def draw_walls():
+    for point in board.board:
+        pygame.draw.rect(screen, blue_color, pygame.Rect(point[0],
+                                                         point[1],
+                                                         min_width,
+                                                         min_height))
+
+
 is_finished = False
 blue_color = (0, 128, 255)
 red_color = (231, 76, 60)
@@ -28,28 +40,24 @@ while not is_finished:
     board = Board()
 
     # Move
-    x = Pedestrian(1, board, (2, 4))
-    y = Pedestrian(2, board, (5, 10))
-    z = Pedestrian(2, board, (5, 10))
+    entrances = [x for x in board.board if (x[2] == 'Entrance')]
 
-    pedRep = PedestrianRepository([[x, y, z], 'Pedestrian Repo'])
+    pedestrians = []
+    for entrance in entrances:
+        x = 1
+        pedestrians.append(Pedestrian(x, board, (entrance[0], entrance[1])))
+        x = x + 1
+
+    pedRep = PedestrianRepository([pedestrians, 'Pedestrian Repo'])
     pedRep.move_all()
 
 
 
     # Draw
     screen.fill((0, 0, 0))
-    for pedestrian in pedRep.pedestrians:
-        pygame.draw.rect(screen, red_color, pygame.Rect(pedestrian.x,
-                                                        pedestrian.y,
-                                                        pedestrian.size,
-                                                        pedestrian.size))
+    draw_pedestrians()
+    draw_walls()
 
-    for point in board.board:
-        pygame.draw.rect(screen, blue_color, pygame.Rect(point[0],
-                                                         point[1],
-                                                         min_width,
-                                                         min_height))
     # Render
     pygame.display.flip()
     clock.tick(30)
