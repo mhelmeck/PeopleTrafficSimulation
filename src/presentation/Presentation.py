@@ -15,11 +15,12 @@ clock = pygame.time.Clock()
 
 board = Board()
 entrances = [x for x in board.board if (x[2] == 'Entrance')]
+shops = [x for x in board.board if (x[2] == 'Shop')]
 
 pedestrians = []
 x = 1
-for entrance in entrances:
-    pedestrians.append(Pedestrian(x, board, (entrance[0], entrance[1])))
+for initial_spawn_point in entrances + shops:
+    pedestrians.append(Pedestrian(x, board, (initial_spawn_point[0], initial_spawn_point[1])))
     x = x + 1
 
 pedRep = PedestrianRepository([pedestrians, 'Pedestrian Repo'])
