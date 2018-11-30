@@ -16,6 +16,7 @@ is_building = False
 blue_color = (0, 128, 255)
 yellow_color = (255,255,0)
 red_color = (231, 76, 60)
+green_color = (0,128,0)
 
 with open("points.txt", "rb") as fp:
     points = pickle.load(fp)
@@ -71,7 +72,7 @@ while not is_finished:
             is_building = not is_building
         if event.type == pygame.MOUSEBUTTONUP:
             pos = pygame.mouse.get_pos()
-            points.append(pos + ("Entrance",))
+            points.append(pos + ("Shop",))
 
     # Move
     (builder_x, builder_y) = set_new_position(builder_x, builder_y)
@@ -87,6 +88,7 @@ while not is_finished:
                                                 builder_size))
     walls = [x for x in points if (x[2] == 'Wall')]
     entrances = [x for x in points if (x[2] == 'Entrance')]
+    shops = [x for x in points if (x[2] == 'Shop')]
     for point in walls:
         pygame.draw.rect(screen, color, pygame.Rect(point[0],
                                                     point[1],
@@ -94,6 +96,9 @@ while not is_finished:
                                                     min_height))
     for point in entrances:
         pygame.draw.circle(screen, yellow_color, (point[0], point[1]), 3)
+
+    for point in shops:
+        pygame.draw.circle(screen, green_color, (point[0], point[1]), 3)
 
     # Render
     pygame.display.flip()

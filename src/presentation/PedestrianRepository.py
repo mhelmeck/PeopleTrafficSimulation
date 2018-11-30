@@ -26,5 +26,6 @@ class PedestrianRepository:
         return str(self.repo_name) + str(self.pedestrians)
 
     def move_all(self):
+        # should be runned on multiple threads depending on system capasity
         for pedestrian in self.pedestrians:
-            pedestrian.random_move()
+            pedestrian.move()
