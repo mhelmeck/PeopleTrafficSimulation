@@ -1,6 +1,3 @@
-from src.Pedestrian import Pedestrian
-
-
 class PedestrianRepository:
     class __PedestrianRepository:
         def __init__(self, arg):
@@ -26,6 +23,6 @@ class PedestrianRepository:
         return str(self.repo_name) + str(self.pedestrians)
 
     def move_all(self):
-        # should be runned on multiple threads depending on system capasity
+        # should be runned on multiple threads depending on system capacity
         for pedestrian in self.pedestrians:
             pedestrian.move()

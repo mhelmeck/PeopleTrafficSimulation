@@ -1,5 +1,6 @@
 import pickle
 
+
 class Board:
     def __init__(self):
         with open("./points.txt", "rb") as fp:
@@ -18,11 +19,9 @@ class Board:
 
     def _in_the_board(self, new_x, new_y):
         if new_y in range(0, self.max_height):
-                if new_x in range(0, self.max_width):
-                    return True
+            if new_x in range(0, self.max_width):
+                return True
         return False
 
     def get_shops(self):
         return self.shops
-
-

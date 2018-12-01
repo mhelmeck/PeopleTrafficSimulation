@@ -1,12 +1,11 @@
 import pygame
 
-from src.Board import Board
-from src.Drawer import Drawer
-from src.Pedestrian import Pedestrian
-from src.PedestrianRepository import PedestrianRepository
+from src.presentation.Board import Board
+from src.presentation.Drawer import Drawer
+from src.presentation.Pedestrian import Pedestrian
+from src.presentation.PedestrianRepository import PedestrianRepository
 
 is_finished = False
-
 
 # Init and main loop
 pygame.init()
@@ -19,7 +18,7 @@ shops = [x for x in board.board if (x[2] == 'Shop')]
 
 pedestrians = []
 x = 1
-for initial_spawn_point in entrances + shops:
+for initial_spawn_point in entrances:
     pedestrians.append(Pedestrian(x, board, (initial_spawn_point[0], initial_spawn_point[1])))
     x = x + 1
 
