@@ -3,7 +3,7 @@ import pickle
 
 class Board:
     def __init__(self):
-        with open("./points.txt", "rb") as fp:
+        with open("../../points.txt", "rb") as fp:
             self.board = pickle.load(fp)
         self.shops = [x for x in self.board if (x[2] == 'Shop')]
         self.entrances = [x for x in self.board if (x[2] == 'Entrances')]
@@ -11,6 +11,7 @@ class Board:
         self.max_height = 200
         self.min_width = 1
         self.min_height = 1
+        self.visited_points = [[0 for _ in range(self.max_height)] for _ in range(self.max_width)]
 
     def is_destination_available(self, new_x, new_y):
         new_point = (new_x, new_y, 'Wall')

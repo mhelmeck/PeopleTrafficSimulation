@@ -13,6 +13,7 @@ class Pedestrian:
         self.step = 1
         self.path = []
         self.generating_path = False
+        self.threads = []
 
     # Aka toString
     def __repr__(self):
@@ -43,12 +44,23 @@ class Pedestrian:
         if val == 4:
             return self._set_new_position("W")
 
+    def _increment_for(self, new_x, new_y):
+        if new_x in range(0, self.board.max_width):
+            if new_y in range(0, self.board.max_height):
+                self.board.visited_points[new_x][new_y] += 25
+
     def move(self):
+        radius = 2
+        for i in range(self.x - radius, self.x + radius):
+            for j in range(self.y - radius, self.y + radius):
+                self._increment_for(i, j)
+
         if not self.generating_path:
             self.generating_path = True
             destination = random.choice(self.shops)
             t = threading.Thread(target=self._generate_path, args=(destination[0: 2],))
             t.start()
+            self.threads.append(t)
         if not self.path:
             self.random_move()
         else:
@@ -65,9 +77,9 @@ class Pedestrian:
         self.y = a[1]
 
     def _generate_path(self, destination):
-        print("Generating Path for: " + str(self))
+        # print("Generating Path for: " + str(self))
         self.path = self._astar((self.x, self.y), destination)
-        print("Created Path: " + str(self.path))
+        # print("Created Path: " + str(self.path))
         return self.path
 
     def _heuristic(self, a, b):

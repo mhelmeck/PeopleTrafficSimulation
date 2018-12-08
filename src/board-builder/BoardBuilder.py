@@ -18,7 +18,7 @@ yellow_color = (255,255,0)
 red_color = (231, 76, 60)
 green_color = (0,128,0)
 
-with open("points.txt", "rb") as fp:
+with open("../../points.txt", "rb") as fp:
     points = pickle.load(fp)
 
 # Methods
@@ -105,7 +105,7 @@ while not is_finished:
     clock.tick(30)
 
 # Save data to file
-with open("points.txt", "wb") as fp:
+with open("../../points.txt", "wb") as fp:
     pickle.dump(points, fp)
 
 # Exit

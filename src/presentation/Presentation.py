@@ -23,7 +23,7 @@ for initial_spawn_point in entrances:
     x = x + 1
 
 pedRep = PedestrianRepository([pedestrians, 'Pedestrian Repo'])
-drawer = Drawer(Board(), pedRep)
+drawer = Drawer(board, pedRep)
 
 while not is_finished:
     # Get event
