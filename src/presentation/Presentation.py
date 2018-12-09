@@ -42,7 +42,7 @@ shops = [x for x in board.board if (x[2] == 'Shop')]
 pedestrians = []
 x = 1
 for initial_spawn_point in entrances:
-    pedestrians.append(Pedestrian(x, board, heat_map, (initial_spawn_point[0], initial_spawn_point[1])))
+    pedestrians.append(Pedestrian(x, board, (initial_spawn_point[0], initial_spawn_point[1])))
     x = x + 1
 
 ped_rep = PedestrianRepository([pedestrians, 'Pedestrian Repo'])

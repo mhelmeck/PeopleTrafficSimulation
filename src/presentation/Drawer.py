@@ -54,6 +54,7 @@ class Drawer:
     def _draw_pedestrians_from_influx_data(self):
         for pedestrian in self.influx_service.get_all_ped_coords():
             pygame.draw.circle(self.screen, self.red_color, (pedestrian[0], pedestrian[1]), 4)
+            self.heat_map.increment_for(pedestrian[0], pedestrian[1])
 
     def _draw_heat_map(self):
         self.heat_map.draw_at(self.screen)

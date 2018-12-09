@@ -22,7 +22,6 @@
 import pygame
 
 from src.presentation.Board import Board
-from src.presentation.HeatMap import HeatMap
 from src.presentation.Pedestrian import Pedestrian
 from src.presentation.PedestrianRepository import PedestrianRepository
 
@@ -52,9 +51,8 @@ shops = [x for x in board.board if (x[2] == 'Shop')]
 
 pedestrians = []
 x = 1
-heat_map = HeatMap(board.max_width, board.max_height)
 for initial_spawn_point in entrances:
-    pedestrians.append(Pedestrian(x, board, heat_map, (initial_spawn_point[0], initial_spawn_point[1])))
+    pedestrians.append(Pedestrian(x, board, (initial_spawn_point[0], initial_spawn_point[1])))
     x = x + 1
 
 pedRep = PedestrianRepository([pedestrians, 'Pedestrian Repo'])
