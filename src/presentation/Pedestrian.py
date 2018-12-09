@@ -2,6 +2,8 @@ import random
 import threading
 from heapq import heappush, heappop
 
+from src.influx.PedestriansCoordSeries import PedestriansCoordSeries
+
 
 class Pedestrian:
     def __init__(self, pid, board, heat_map, position):
@@ -14,7 +16,6 @@ class Pedestrian:
         self.step = 1
         self.path = []
         self.generating_path = False
-        self.threads = []
 
     # Aka toString
     def __repr__(self):
@@ -23,19 +24,19 @@ class Pedestrian:
     def _set_new_position(self, direction):
         if direction == "N":
             if self.board.is_destination_available(self.x, self.y - self.step):
-                self.y -= self.step
+                self.set_position((self.x, self.y - self.step))
         if direction == "S":
             if self.board.is_destination_available(self.x, self.y + self.step):
-                self.y += self.step
+                self.set_position((self.x, self.y + self.step))
         if direction == "W":
             if self.board.is_destination_available(self.x - self.step, self.y):
-                self.x -= self.step
+                self.set_position((self.x - self.step, self.y))
         if direction == "E":
             if self.board.is_destination_available(self.x + self.step, self.y):
-                self.x += self.step
+                self.set_position((self.x + self.step, self.y))
 
     def random_move(self):
-        val = random.randint(1, 4)
+        val = random.randint(1, 8)
         if val == 1:
             return self._set_new_position("N")
         if val == 2:
@@ -44,16 +45,18 @@ class Pedestrian:
             return self._set_new_position("S")
         if val == 4:
             return self._set_new_position("W")
+        if val >= 5:
+            return self
 
     def move(self):
-        self.heat_map.increment_for(self.x, self.y)
+        PedestriansCoordSeries(ped_id=self.id, x=self.x, y=self.y)
+        # self.heat_map.increment_for(self.x, self.y)
 
         if not self.generating_path:
             self.generating_path = True
             destination = random.choice(self.shops)
             t = threading.Thread(target=self._generate_path, args=(destination[0: 2],))
             t.start()
-            self.threads.append(t)
         if not self.path:
             self.random_move()
         else:
@@ -65,14 +68,14 @@ class Pedestrian:
     def _mark_generating_path_as_done(self):
         self.generating_path = False
 
-    def set_position(self, a):
-        self.x = a[0]
-        self.y = a[1]
+    def set_position(self, coord):
+        self.x = coord[0]
+        self.y = coord[1]
 
     def _generate_path(self, destination):
-        # print("Generating Path for: " + str(self))
+        print("Generating Path for: " + str(self))
         self.path = self._astar((self.x, self.y), destination)
-        # print("Created Path: " + str(self.path))
+        print("Created Path: " + str(self.path))
         return self.path
 
     def _heuristic(self, a, b):

@@ -1,5 +1,5 @@
-import pygame
 import pickle
+import pygame
 
 # Properties
 max_width = 800
@@ -14,12 +14,13 @@ builder_size = step
 is_finished = False
 is_building = False
 blue_color = (0, 128, 255)
-yellow_color = (255,255,0)
+yellow_color = (255, 255, 0)
 red_color = (231, 76, 60)
-green_color = (0,128,0)
+green_color = (0, 128, 0)
 
 with open("../../points.txt", "rb") as fp:
     points = pickle.load(fp)
+
 
 # Methods
 def should_move_to(new_x, new_y):
@@ -28,6 +29,7 @@ def should_move_to(new_x, new_y):
     # is_valid = False if new_point in points else True
     #
     # return is_valid
+
 
 def set_new_position(x_pos, y_pos):
     pressed = pygame.key.get_pressed()

@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+set -e
+OPTION=${1}
+CONTAINER_NAME="wifi-tracker-influx"
+
+case $OPTION in
+  'run-influx')
+    echo "Running Influx Container ..."
+    docker run -d --name wifi-tracker-influx -p 8086:8086 -v $PWD:/var/lib/influxdb influxdb
+    ;;
+
+  'run-influx-cli')
+    CONTAINER_ID=$(docker ps -q --filter "name=${CONTAINER_NAME}")
+    echo "Running Influx CLI on ${CONTAINER_ID} ..."
+    docker exec -it ${CONTAINER_ID} influx
+    ;;
+
+  'rm-influx')
+    CONTAINER_ID=$(docker ps -q --filter "name=${CONTAINER_NAME}")
+    echo "STOPPING Influx Container ${CONTAINER_ID} ..."
+    docker rm ${CONTAINER_ID} -f
+    ;;
+
+  *)
+    echo "usage:"
+    echo "       ${0} run-influx run-influx-cli rm-influx"
+    echo "       ${0} "
+    ;;
+esac
