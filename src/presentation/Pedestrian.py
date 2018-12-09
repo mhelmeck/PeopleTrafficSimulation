@@ -6,9 +6,10 @@ from src.influx.PedestriansCoordSeries import PedestriansCoordSeries
 
 
 class Pedestrian:
-    def __init__(self, pid, board, position):
+    def __init__(self, pid, board, heat_map, position):
         self.id = pid
         self.board = board
+        self.heat_map = heat_map
         self.shops = board.get_shops()
         self.x = position[0]
         self.y = position[1]
@@ -49,6 +50,8 @@ class Pedestrian:
 
     def move(self):
         PedestriansCoordSeries(ped_id=self.id, x=self.x, y=self.y)
+        # self.heat_map.increment_for(self.x, self.y)
+
         if not self.generating_path:
             self.generating_path = True
             destination = random.choice(self.shops)
