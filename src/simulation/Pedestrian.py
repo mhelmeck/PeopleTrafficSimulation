@@ -97,6 +97,7 @@ class Pedestrian:
         print("Created Path: " + str(self.path))
         return self.path
 
+    # noinspection PyMethodMayBeStatic
     def _heuristic(self, a, b):
         return (b[0] - a[0]) ** 2 + (b[1] - a[1]) ** 2
 

@@ -21,9 +21,9 @@
 
 import pygame
 
-from src.presentation.Board import Board
-from src.presentation.Pedestrian import Pedestrian
-from src.presentation.PedestrianRepository import PedestrianRepository
+from src.common.Board import Board
+from src.simulation.Pedestrian import Pedestrian
+from src.simulation.PedestrianRepository import PedestrianRepository
 
 pygame.init()
 
@@ -50,10 +50,11 @@ entrances = [x for x in board.board if (x[2] == 'Entrance')]
 shops = [x for x in board.board if (x[2] == 'Shop')]
 
 pedestrians = []
-x = 1
-for initial_spawn_point in entrances:
-    pedestrians.append(Pedestrian(x, board, (initial_spawn_point[0], initial_spawn_point[1])))
-    x = x + 1
+uuid = 0
+for i, shop in enumerate(shops):
+    if i % 3 == 0:
+        pedestrians.append(Pedestrian(uuid, board, (shop[0], shop[1])))
+        uuid += 1
 
 pedRep = PedestrianRepository([pedestrians, 'Pedestrian Repo'])
 
@@ -74,10 +75,10 @@ def button(msg, x, y, w, h, ic, ac, action=None):
     else:
         pygame.draw.rect(gameDisplay, ic, (x, y, w, h))
 
-    smallText = pygame.font.Font("freesansbold.ttf", 20)
-    textSurf, textRect = text_objects(msg, smallText)
-    textRect.center = ((x + (w / 2)), (y + (h / 2)))
-    gameDisplay.blit(textSurf, textRect)
+    small_text = pygame.font.Font("freesansbold.ttf", 20)
+    text_surf, text_rect = text_objects(msg, small_text)
+    text_rect.center = ((x + (w / 2)), (y + (h / 2)))
+    gameDisplay.blit(text_surf, text_rect)
 
 
 def text_field(font_name, font_size, text, x, y):
@@ -105,7 +106,6 @@ def game_intro():
 
     while intro:
         for event in pygame.event.get():
-            # print(event)
             if event.type == pygame.QUIT:
                 stop_simulation()
 

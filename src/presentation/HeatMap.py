@@ -28,6 +28,7 @@ class HeatMap:
         self.max_height = max_height
         self.radius = 2
         self.increment_value = 1
+        self.should_color_by_fraction = True
         self.visited_points = [[0 for _ in range(self.max_height)] for _ in range(self.max_width)]
 
     # Private methods
@@ -36,28 +37,33 @@ class HeatMap:
             if new_y in range(0, self.max_height):
                 self.visited_points[new_x][new_y] += self.increment_value
 
-    # noinspection PyMethodMayBeStatic
-    def _color_for_value(self, value):
-        if value in range(0, 25):
-            return 16, 20, 248
-        if value in range(25, 50):
-            return 99, 250, 43
-        if value in range(50, 75):
-            return 235, 137, 35
+    def _color_for(self, value):
+        if self.should_color_by_fraction:
+            return self._color_by_fraction(value)
 
-        return 227, 35, 27
+        return self._color_by_value(value)
 
     # noinspection PyMethodMayBeStatic
-    def _color_for_value_by_fraction(self, value):
+    def _color_by_fraction(self, value):
         max_value = max(max(self.visited_points))
         fraction = value / max_value
-        print(fraction)
 
         if fraction < 0.25:
             return 16, 20, 248
         if fraction in (0.25, 0.5):
             return 99, 250, 43
         if fraction in (0.5, 0.75):
+            return 235, 137, 35
+
+        return 227, 35, 27
+
+    # noinspection PyMethodMayBeStatic
+    def _color_by_value(self, value):
+        if value in range(0, 25):
+            return 16, 20, 248
+        if value in range(25, 50):
+            return 99, 250, 43
+        if value in range(50, 75):
             return 235, 137, 35
 
         return 227, 35, 27
@@ -72,5 +78,5 @@ class HeatMap:
         for x in range(self.max_width):
             for y in range(self.max_height):
                 if self.visited_points[x][y] != 0:
-                    color = self._color_for_value_by_fraction(self.visited_points[x][y])
+                    color = self._color_for(self.visited_points[x][y])
                     pygame.draw.rect(screen, color, pygame.Rect(x, y, 1, 1))
