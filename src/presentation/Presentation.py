@@ -31,7 +31,7 @@ while not is_finished:
         if event.type == pygame.QUIT:
             is_finished = True
 
-    pedRep.move_all()
+    # pedRep.move_all()
     drawer.draw()
 
     pygame.display.flip()
